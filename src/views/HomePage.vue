@@ -10,7 +10,7 @@
         </div>
         <div class="logo-cesizen">
           <div class="logo-icon">
-            <img src="./assets/CESIzen logo with meditative figure.png" alt="CESIZen" height="32" />
+            <img src="../assets/CESIzen logo with meditative figure.png" alt="CESIZen" height="32" />
           </div>
           <span class="brand-name"><strong>CESI</strong><span class="zen">Zen</span></span>
         </div>

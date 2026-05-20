@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 
 import exerciseRoutes from "./routes/exerciseRoutes.js";
-import sessionRoutes from "./routes/sessionRoutes.js";
+import sessionRoutes from "./routes/sessionroutes.js";
 import userRoutes from "./routes/Userroutes.js";
 import ressourceRoutes from "./routes/ressourceRoutes.js";
 

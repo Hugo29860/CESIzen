@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────
+# docker-compose.yml – CESIzen
+# Orchestre : Frontend (Nginx) + Backend (Express) + MongoDB
+# ─────────────────────────────────────────────
+
+services:
+
+  # ── MongoDB ──────────────────────────────────
+  mongodb:
+    image: mongo:7-jammy
+    container_name: cesizen-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: cesizen
+    volumes:
+      - mongodb_data:/data/db        # Persistance des données
+    networks:
+      - cesizen-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── Backend (API Express) ─────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cesizen-backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy   # Attend que MongoDB soit prêt
+    environment:
+      # En développement : valeurs directes
+      # En production : utiliser un fichier .env ou Docker Secrets
+      MONGO_URI: mongodb://mongodb:27017/cesizen
+      JWT_SECRET: ${JWT_SECRET:-mon_secret_super_secure_a_changer_en_prod}
+      PORT: 3000
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "3000:3000"                  # Accessible sur http://localhost:3000
+    networks:
+      - cesizen-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ── Frontend (Vue 3 + Nginx) ──────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cesizen-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy   # Attend que le backend soit prêt
+    ports:
+      - "80:80"                      # Accessible sur http://localhost
+    networks:
+      - cesizen-network
+
+# ── Volumes persistants ───────────────────────
+volumes:
+  mongodb_data:
+    name: cesizen-mongodb-data
+
+# ── Réseau interne isolé ──────────────────────
+networks:
+  cesizen-network:
+    name: cesizen-network
+    driver: bridge

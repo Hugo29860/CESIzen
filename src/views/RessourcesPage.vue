@@ -159,7 +159,7 @@ const ouvrirArticle = (res) => { articleOuvert.value = res }
 const fetchRessources = async () => {
   isLoading.value = true
   try {
-    const res = await fetch('http://localhost:3000/api/ressources')
+    const res = await fetch('/api/ressources')
     ressources.value = await res.json()
   } catch {
     console.error('Erreur chargement ressources')

@@ -197,6 +197,13 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { currentUser, logout } from '../stores/auth.js'
 
+
+    const res = await fetch('/api/diagnostic', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, password: password.value }),
+    })
+
 const router = useRouter()
 const user = computed(() => currentUser.value)
 

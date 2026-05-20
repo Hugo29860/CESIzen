@@ -15,10 +15,8 @@
 <<<<<<< HEAD
         <a href="#" class="nav-link active">Accueil</a>
         <a href="#" class="nav-link">FONCTIONNALITÉS</a>
-=======
         <router-link to="/" class="nav-link">Accueil</router-link>
         <router-link to="/" class="nav-link">FONCTIONNALITÉS</router-link>
->>>>>>> 4d1091e402241437e8443aa7d946972fd1b5bcb0
         <RouterLink to="/ressources" class="nav-link highlight">RESSOURCES</RouterLink>
         <a href="#" class="nav-link">ACTUALITÉS</a>
         <a href="#" class="nav-link">FAQ</a>
@@ -252,7 +250,7 @@ export default {
  
   async mounted() {
     try {
-      const res = await axios.get("http://localhost:3000/api/exercises");
+      const res = await axios.get("/api/exercises");
       this.exercises = res.data;
     } catch (err) {
       console.error(err);

@@ -278,7 +278,7 @@ const form = ref({ name: '', description: '', duration: '', inspire: 4, hold: 0,
 const fetchExercises = async () => {
   isLoading.value = true
   try {
-    const res = await fetch('http://localhost:3000/api/exercises')
+    const res = await fetch('/api/exercises')
     exercises.value = await res.json()
   } catch { console.error('Erreur chargement exercices') }
   finally { isLoading.value = false }

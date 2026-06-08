@@ -10,7 +10,7 @@ import userRoutes from "./routes/Userroutes.js";
 import ressourceRoutes from "./routes/ressourceRoutes.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN || 'http://localhost' }))
 app.use(express.json());
 dotenv.config();
 
